@@ -4,7 +4,7 @@ import os
 
 SRC_PATH = os.path.join(os.path.dirname(__file__))
 CHOOCH_SOURCE_FILES = [
-    "printbanner.c", "minmax.c", "spline.c", "mucal.c", "fdprime.c",
+    "printbanner.c", "minmax.c", "mucal.c", "fdprime.c",
     "smooth.c", "fits.c", "normalize.c", "checks.c", "integrate.c",
     "selwavel.c", "toplot.c", "savwin.c"]
 

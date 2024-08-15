@@ -7,12 +7,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <gsl/gsl_errno.h>
 #include "chooch.h"
 
 char *sElement;
 char *sEdge;
+char cScanTitle[TITLE]="";
 int id1=0, id2=0;
-int verbose, silent, kev;
+int verbose, status, silent, kev;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
 double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
 double fEres=0.00014;
@@ -155,11 +157,11 @@ PyObject* chooch_calc(double *fXraw, double *fYraw, int nDataPoints, const char*
   int nFit, nPoints, plotX=0, psplot=0, pngplot=0, display=0;
   int nSavWin;
   //
-  double dE, tmp, fEdge, fMonoRes;
-  double fYfita[MAXSIZE], fYfitb[MAXSIZE];
-  double fYspline[MAXSIZE], fXfpp[MAXSIZE];
-  double fYsmooth[MAXSIZE], fYnorm[MAXSIZE];
-  double fYfpp[MAXSIZE], fYfpps[MAXSIZE], fYfp[MAXSIZE];
+  double dE, fEdge;
+  double fYfita[MAXSIZE], fYfitb[MAXSIZE];  // Output
+  double fYspline[MAXSIZE], fXfpp[MAXSIZE];  // Output values of Energy and fpp
+  double fYsmooth[MAXSIZE], fYnorm[MAXSIZE]; // Smoothed and normalised fluorescence spectra
+  double fYfpp[MAXSIZE], fYfpps[MAXSIZE], fYfp[MAXSIZE]; // Raw f'', smoothed f''
   double fYDeriv1[MAXSIZE], fYDeriv2[MAXSIZE], fYDeriv3[MAXSIZE];
   double C[3], result, error, fMid;
   //
