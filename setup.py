@@ -17,5 +17,5 @@ setup(
   author=("Chooch: Gywndalf Evans, Diamond Light Source;"
           "Python binding: Matias Guijarro, ESRF"),
   ext_modules=[Extension(
-    'PyChooch', PYCHOOCH_SOURCE_FILES, libraries=['gsl', 'gslcblas'])],
+    'PyChooch', PYCHOOCH_SOURCE_FILES, libraries=['gsl', 'gslcblas', 'plplot'])],
 )
