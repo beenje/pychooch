@@ -114,14 +114,25 @@ void custom_err_handler(const char* reason, const char* file, int line, int gsl_
     PyErr_SetString(PyExc_RuntimeError, reason);
 };
 
+// Define the module
+static struct PyModuleDef PyChoochModule = {
+    PyModuleDef_HEAD_INIT,
+    "PyChooch",   /* name of module */
+    NULL,         /* module documentation, may be NULL */
+    -1,           /* size of per-interpreter state of the module,
+                     or -1 if the module keeps state in global variables. */
+    PyChoochMethods
+};
 
+// Initialization function for the module
 PyMODINIT_FUNC
-initPyChooch(void)
+PyInit_PyChooch(void)
 {
-    // install our own error handler for the GSL
-    gsl_set_error_handler(&custom_err_handler);	
+    // Install our own error handler for the GSL
+    gsl_set_error_handler(&custom_err_handler);
 
-    (void) Py_InitModule("PyChooch", PyChoochMethods);
+    // Create the module
+    return PyModule_Create(&PyChoochModule);
 }
 
 static int my_efswrite(const char *filename, double *x, double *y1, double *y2, int n) {
