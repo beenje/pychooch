@@ -30,7 +30,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <gsl/gsl_errno.h>
-#include <plplot.h>
+#include <plplot/plplot.h>
 //
 #include "chooch.h"
 int c;

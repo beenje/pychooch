@@ -23,8 +23,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "chooch.h"
-#include <plplot.h>
-#include <plevent.h>
+#include <plplot/plplot.h>
+#include <plplot/plevent.h>
 
 
 void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
