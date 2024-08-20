@@ -8,8 +8,10 @@
 #include <ctype.h>
 #include <math.h>
 #include <gsl/gsl_errno.h>
+#include <setjmp.h>
 #include "chooch.h"
 
+static jmp_buf jump_buffer;
 char *sElement;
 char *sEdge;
 char cScanTitle[TITLE]="";
@@ -97,7 +99,13 @@ static PyObject* PyChooch_calc(PyObject *self, PyObject *args) {
   }
 
   // do chooch calculation
-  res=chooch_calc(xdata, ydata, npoints, element, edge, outfile);
+  if (setjmp(jump_buffer) == 0) {
+    res=chooch_calc(xdata, ydata, npoints, element, edge, outfile);
+  } else {
+    // Error occurred, handle it
+    PyErr_SetString(PyExc_RuntimeError, "GSL error occurred");
+    return NULL;
+  }
 
   return res;
 }
@@ -111,7 +119,11 @@ static PyMethodDef PyChoochMethods[] = {
 
 
 void custom_err_handler(const char* reason, const char* file, int line, int gsl_errno) {
-    PyErr_SetString(PyExc_RuntimeError, reason);
+    fprintf(stderr, "GSL error: %s:%d: %s (error code: %d)\n", file, line, reason, gsl_errno);
+
+    // Calling directly PyErr_SetString here didn't work
+    // Jump back to the recovery point
+    longjmp(jump_buffer, 1);
 };
 
 // Define the module
